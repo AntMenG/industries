@@ -1,3 +1,6 @@
+const csv = require('csvtojson');
+const csvFilePath='./startups.csv';
+
 interface STARTUP {
     name: string;
     industry: string;
@@ -23,19 +26,16 @@ class match {
     industries = ['bio','internet','environment'];
 
     constructor () {
-        let _industry = 0;
-        for(let i = 0; i < 51; i++, _industry++) {
-            _industry == this.industries.length ? _industry = 0 : undefined;
-            this.startups.push({
-                name: `startup-${i + 1}`,
-                industry: this.industries[_industry]
-            });
-        }
         console.log('Investors');
         console.table(this.investors);
+        console.log('Resultado');
+        this.setStartups();
+    }
+    
+    async setStartups() {
+        this.startups = await csv().fromFile(csvFilePath);
         console.log('Startups');
         console.table(this.startups);
-        console.log('Resultado');
         console.table(this._match());
     }
 
